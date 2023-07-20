@@ -1,0 +1,31 @@
+pipeline {
+  agent any
+
+  stages {
+    stage ("Copy git files to test node") {
+      steps {
+        node ("test_server") {
+          
+          print ("Downloading the source code from GitHub develop branch")
+          checkout scmGit(
+            branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/trojanMorse/mavenwebhook']]
+          )
+          }
+        }
+      }
+    
+    
+ stage ("Copy git files to prod node") {
+      steps {
+        node ("prod_server") {
+          
+          //Checkout the SCM
+          print ("Downloading the source code from GitHub prod branch")
+          checkout scmGit(
+            branches: [[name: '*/prod']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/trojanMorse/mavenwebhook']]
+          )
+          }
+        }
+      }
+    }
+}
